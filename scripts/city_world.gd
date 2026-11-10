@@ -210,7 +210,7 @@ func _build_promenade() -> void:
 			_lamp(Vector3(11.1, 0, z - 5))
 	_batch(posts, Vector3(0.19, 1.12, 0.21), Color("#8f7660"))
 	_batch(rails, Vector3(0.17, 0.17, 13.1), Color("#8c765d"))
-	_batch([Vector3(16.8, 0.42, -150)], Vector3(0.11, 0.11, 346), Color("#957d68"))
+	_cube(Vector3(16.8, 0.42, -150), Vector3(0.11, 0.11, 346), Color("#957d68"))
 	# Lixeiras, canteiros, bancos e quiosques simples.
 	for i in range(8):
 		var z := 3.0 - float(i) * 43.0
