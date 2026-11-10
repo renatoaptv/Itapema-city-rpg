@@ -206,7 +206,7 @@ func _make_interface() -> void:
 	_label(hud, "CIDADE DEMONSTRATIVA • 3a PESSOA", Vector2(480, 77), Vector2(365, 24), 14, Color("#ffffffdd"))
 	_label(hud, "ARRASTE A TELA PARA OLHAR", Vector2(949, 527), Vector2(290, 20), 14, Color.WHITE)
 	var joy_base := Panel.new()
-	joy_base.position = Vector2(42, 527)
+	joy_base.position = Vector2(42, 506)
 	joy_base.size = Vector2(172, 172)
 	joy_base.add_theme_stylebox_override("panel", _style(Color("#182d426a"), Color("#d4f1ee88"), 90))
 	joy_base.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -217,13 +217,13 @@ func _make_interface() -> void:
 	joystick_dot.add_theme_stylebox_override("panel", _style(Color("#76d8ce"), Color("#e4fffd"), 48))
 	joystick_dot.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	joy_base.add_child(joystick_dot)
-	_label(hud, "ANDAR", Vector2(88, 695), Vector2(100, 24), 15, Color.WHITE)
-	var chat := _button(hud, "CHAT LOCAL  •  DEMO", Vector2(300, 636), Vector2(390, 52), "Chat")
+	_label(hud, "ANDAR", Vector2(88, 671), Vector2(100, 24), 15, Color.WHITE)
+	var chat := _button(hud, "CHAT LOCAL  •  DEMO", Vector2(300, 615), Vector2(390, 52), "Chat")
 	chat.add_theme_color_override("font_color", GOLD)
-	var run := _button(hud, "CORRER", Vector2(1041, 611), Vector2(107, 72), "")
+	var run := _button(hud, "CORRER", Vector2(1041, 595), Vector2(107, 72), "")
 	run.button_down.connect(func(): sprint = true)
 	run.button_up.connect(func(): sprint = false)
-	_button(hud, "INTERAGIR", Vector2(1155, 591), Vector2(115, 96), "Imoveis")
+	_button(hud, "INTERAGIR", Vector2(1155, 577), Vector2(115, 96), "Imoveis")
 	# Modal demonstrativo.
 	pop = Panel.new()
 	pop.position = Vector2(353, 131)
@@ -303,7 +303,7 @@ func _send_chat() -> void:
 	_open_menu("Chat")
 
 func _move_joystick(point: Vector2) -> void:
-	var offset := (point - Vector2(128, 613)) / 68.0
+	var offset := (point - Vector2(128, 592)) / 68.0
 	joystick = offset.limit_length(1.0)
 	if joystick_dot:
 		joystick_dot.position = Vector2(55, 55) + joystick * 49.0
