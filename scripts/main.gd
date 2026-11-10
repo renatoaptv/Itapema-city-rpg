@@ -86,59 +86,9 @@ func _trunk(pos: Vector3, radius: float, height: float, color: Color) -> MeshIns
 	return mesh
 
 func _make_world() -> void:
-	var env_node := WorldEnvironment.new()
-	add_child(env_node)
-	var env := Environment.new()
-	env.background_mode = Environment.BG_COLOR
-	env.background_color = SKY
-	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color = Color("#d3e5f4")
-	env.ambient_light_energy = 0.95
-	env_node.environment = env
-	var sun := DirectionalLight3D.new()
-	add_child(sun)
-	sun.rotation_degrees = Vector3(-53, -33, 0)
-	sun.light_energy = 1.35
-	sun.light_color = Color("#fff2dc")
-	sun.shadow_enabled = false
-
-	# Calçada, ciclovia, avenida, faixa de areia e mar.
-	_box(Vector3(0, -0.35, -135), Vector3(220, 0.6, 380), Color("#9cb99a"))
-	_box(Vector3(-5, -0.09, -135), Vector3(12, 0.2, 380), Color("#d7cec0"))
-	_box(Vector3(3, -0.085, -135), Vector3(3.8, 0.2, 380), Color("#bd4b52"))
-	_box(Vector3(13, -0.12, -135), Vector3(16, 0.2, 380), Color("#494e53"))
-	_box(Vector3(22.5, -0.08, -135), Vector3(3.2, 0.2, 380), Color("#d8cfc1"))
-	_box(Vector3(39, -0.16, -135), Vector3(30, 0.2, 380), Color("#efdbad"))
-	_box(Vector3(98, -0.23, -135), Vector3(88, 0.2, 380), Color("#32a5c1"), 0.15)
-	# Bordas e marcações de pista.
-	for i in range(30):
-		var z := 26.0 - float(i) * 12.0
-		_box(Vector3(13.0, 0.015, z), Vector3(0.15, 0.03, 5), Color("#f3ebd3"))
-		_box(Vector3(3.15, 0.025, z), Vector3(0.1, 0.025, 5), Color("#f4c3ba"))
-		_box(Vector3(4.85, 0.025, z), Vector3(0.1, 0.025, 5), Color("#f4c3ba"))
-		if i % 3 == 0:
-			for stripe in range(6):
-				_box(Vector3(6.3 + stripe * 2.2, 0.025, z - 4), Vector3(1.35, 0.03, 1.9), Color("#faf9f0"))
-	# Torres individualizadas de exemplo com sacadas e vitrines.
-	for i in range(9):
-		_make_building(i, -11.0 - float(i % 2) * 1.1, 11.0 - float(i) * 31.0)
-	# Paisagismo e guarda-corpos.
-	for i in range(19):
-		var z := 15.0 - float(i) * 16.0
-		_make_palm(25.0, z, 6.4 + float(i % 3))
-		if i % 2 == 0:
-			_make_palm(-9.5, z - 7.0, 4.8)
-		_box(Vector3(26.1, 0.48, z), Vector3(0.12, 1, 0.15), Color("#897b69"))
-		_box(Vector3(26.1, 0.93, z - 8.0), Vector3(0.10, 0.12, 16.0), Color("#96816b"))
-	# Marcador 3D na rua (nao e anuncio real).
-	var marker := Label3D.new()
-	marker.text = "LANCAMENTO\nDEMONSTRATIVO"
-	marker.position = Vector3(-8.7, 5.7, demo_building_z)
-	marker.font_size = 64
-	marker.pixel_size = 0.012
-	marker.modulate = GOLD
-	marker.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	add_child(marker)
+	# Orla em cena separada: facil trocar edificios por modelos GLB reais.
+	var city_scene := preload("res://scripts/city_world.gd")
+	add_child(city_scene.new())
 
 func _make_building(i: int, frontage_x: float, z: float) -> void:
 	var levels := 8 + (i % 5)
@@ -177,7 +127,7 @@ func _make_palm(x: float, z: float, height: float) -> void:
 
 func _make_player() -> void:
 	player = Node3D.new()
-	player.position = Vector3(-4, 0.32, 14)
+	player.position = Vector3(-1.5, 0.32, 14)
 	add_child(player)
 	_box(Vector3(0, 1.32, 0), Vector3(0.83, 1.05, 0.39), Color("#15242a"), 0.15, player)
 	_ball(Vector3(0, 2.12, 0), 0.34, Color("#c58c63"), player)
@@ -191,7 +141,7 @@ func _make_player() -> void:
 	camera.current = true
 	camera.fov = 76
 	add_child(camera)
-	camera.position = player.position + Vector3(0, 4.1, 7.8)
+	camera.position = player.position + Vector3(0, 3.7, 6.3)
 	camera.look_at(player.position + Vector3(0, 1.5, -4.0), Vector3.UP)
 
 func _style(background: Color, border: Color = Color("#ffffff46"), radius: int = 16) -> StyleBoxFlat:
@@ -422,7 +372,7 @@ func _physics_process(delta: float) -> void:
 		displacement = Vector3.ZERO
 	var before := player.position
 	player.position += displacement
-	player.position.x = clampf(player.position.x, -8.3, 23.0)
+	player.position.x = clampf(player.position.x, -5.4, 24.0)
 	player.position.z = clampf(player.position.z, -310.0, 22.0)
 	traveled += before.distance_to(player.position)
 	if traveled >= 60.0 and xp < 100:
@@ -437,6 +387,6 @@ func _physics_process(delta: float) -> void:
 	else:
 		leg_l.rotation.x = lerpf(leg_l.rotation.x, 0, delta * 8)
 		leg_r.rotation.x = lerpf(leg_r.rotation.x, 0, delta * 8)
-	var behind := Vector3(sin(yaw) * 7.0, 4.6, cos(yaw) * 7.0)
+	var behind := Vector3(sin(yaw) * 6.0, 3.7, cos(yaw) * 6.0)
 	camera.position = camera.position.lerp(player.position + behind, minf(1.0, delta * 7.0))
 	camera.look_at(player.position + Vector3(-sin(yaw) * 3.3, 1.7, -cos(yaw) * 3.3), Vector3.UP)
