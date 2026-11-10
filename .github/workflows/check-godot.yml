@@ -1,0 +1,23 @@
+name: Verificar projeto Godot
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  validar-cenas-e-scripts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Baixar Godot 4.7.2
+        run: |
+          curl -fL --retry 3 "https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip" -o godot.zip
+          unzip -q godot.zip
+          chmod +x Godot_v4.7.2-stable_linux.x86_64
+      - name: Importar e verificar projeto em modo sem interface
+        run: |
+          ./Godot_v4.7.2-stable_linux.x86_64 --headless --editor --path . --quit 2>&1 | tee godot-check.log
+          if grep -E "SCRIPT ERROR:|Parse Error:|Failed to load script" godot-check.log; then
+            echo "Falha na validacao do GDScript."
+            exit 1
+          fi
