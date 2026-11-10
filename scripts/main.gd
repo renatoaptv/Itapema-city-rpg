@@ -254,7 +254,7 @@ func _make_interface() -> void:
 		var names := ["Imoveis", "Corretores", "Missoes", "Eventos", "Loja"]
 		_button(hud, names[i], Vector2(15, 128 + i * 57), Vector2(155, 48), names[i])
 	_label(hud, "CIDADE DEMONSTRATIVA • 3a PESSOA", Vector2(480, 77), Vector2(365, 24), 14, Color("#ffffffdd"))
-	_label(hud, "ARASTE A TELA PARA OLHAR", Vector2(949, 527), Vector2(290, 20), 14, Color.WHITE)
+	_label(hud, "ARRASTE A TELA PARA OLHAR", Vector2(949, 527), Vector2(290, 20), 14, Color.WHITE)
 	var joy_base := Panel.new()
 	joy_base.position = Vector2(42, 527)
 	joy_base.size = Vector2(172, 172)
@@ -309,7 +309,7 @@ func _explanation(name: String) -> String:
 		"Loja":
 			return "LOJA DO JOGO\n\nNo futuro: roupas, itens cosmeticos e personalizacao do personagem. Nao existem compras reais."
 		"Chat":
-			return "CHAT LOCAL DEMONSTRATIVO\n\nAs mensagens so aparecem neste aparelho. Nao ha outros jogadores reais online.\n\n" + "\n".join(chat_messages.slice(-7))
+			return "CHAT LOCAL DEMONSTRATIVO\n\nAs mensagens so aparecem neste aparelho. Nao ha outros jogadores reais online.\n\n" + "\n".join(PackedStringArray(chat_messages.slice(-7)))
 	return ""
 
 func _open_menu(name: String) -> void:
